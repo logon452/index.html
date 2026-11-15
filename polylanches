@@ -1,0 +1,552 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Poly Lanches</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Serif+Display&display=swap">
+<style>
+/* Layout: cartão vermelho arredondado com hero em duas colunas (texto + lanche em destaque) e carrossel de lanches embaixo; cardápio branco; faixa de história; rodapé vermelho. */
+:root{
+  --red:#C8102E;
+  --red-deep:#9E0B22;
+  --red-soft:#E02A47;
+  --white:#FFFFFF;
+  --blush:#FFF2F0;
+  --line:#F2D2CF;
+  --ink:#2B0B10;
+  --muted:#6E4A4F;
+  --font-display:'DM Serif Display',Georgia,'Times New Roman',serif;
+  --font-body:'DM Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--white);color:var(--ink);
+  font-family:var(--font-body);font-size:16px;line-height:1.55;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:20px 40px;
+}
+h1,h2,h3,p{margin:0}
+h1,h2{font-family:var(--font-display);font-weight:400;text-wrap:balance}
+a{color:inherit}
+button{font-family:inherit}
+:focus-visible{outline:3px solid #FFB3BE;outline-offset:3px}
+.wrap{max-width:1180px;margin-inline:auto}
+svg{display:block;max-width:100%}
+
+/* botões */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 24px;border-radius:14px;border:2px solid transparent;font-weight:700;font-size:15px;text-decoration:none;cursor:pointer;transition:transform .15s,background .15s,color .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn-white{background:var(--white);color:var(--red)}
+.btn-ghost{background:transparent;color:var(--white);border-color:rgba(255,255,255,.65)}
+.btn-ghost:hover{background:rgba(255,255,255,.14)}
+.btn-red{background:var(--red);color:var(--white)}
+.btn-red:hover{background:var(--red-deep)}
+.btn-outline{background:transparent;color:var(--red);border-color:var(--red)}
+.btn-outline:hover{background:var(--red);color:var(--white)}
+.btn svg{width:20px;height:20px;flex:none}
+
+/* hero */
+.hero{position:relative;overflow:hidden;background:var(--red);color:var(--white);border-radius:32px;padding:clamp(18px,3vw,32px);box-shadow:inset 0 0 0 2px rgba(255,255,255,.35)}
+.hero::before{content:"";position:absolute;width:70%;aspect-ratio:1;right:-10%;top:5%;border-radius:50%;background:radial-gradient(closest-side,var(--red-soft),rgba(224,42,71,0));pointer-events:none}
+.nav{position:relative;z-index:3;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:14px}
+.logo-mark{width:38px;height:38px;border-radius:50%;background:var(--white);color:var(--red);display:grid;place-items:center;font-family:var(--font-display);font-size:24px;letter-spacing:0;line-height:1}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-links a,.nav-links button{background:none;border:0;color:var(--white);font-size:14px;font-weight:500;padding:10px 14px;border-radius:10px;text-decoration:none;cursor:pointer;min-height:44px}
+.nav-links a:hover,.nav-links button:hover{background:rgba(255,255,255,.16)}
+.nav-actions{display:flex;align-items:center;gap:8px}
+.icon-btn{position:relative;width:46px;height:46px;border-radius:50%;border:2px solid rgba(255,255,255,.6);background:transparent;color:var(--white);display:grid;place-items:center;cursor:pointer}
+.icon-btn:hover{background:rgba(255,255,255,.16)}
+.icon-btn svg{width:22px;height:22px}
+.badge{position:absolute;top:-6px;right:-6px;min-width:22px;height:22px;padding:0 6px;border-radius:11px;background:var(--white);color:var(--red);font-size:12px;font-weight:700;display:grid;place-items:center}
+.badge[hidden]{display:none}
+.burger-btn{display:none}
+.hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:24px;align-items:center;padding-block:clamp(20px,4vw,48px) 8px}
+.eyebrow{font-size:13px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;opacity:.9;margin-bottom:14px}
+.hero h1{font-size:clamp(42px,6.4vw,78px);line-height:1.02;margin-bottom:18px}
+.hero-copy p{max-width:46ch;font-size:17px;opacity:.95;margin-bottom:26px}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px}
+.stage{min-width:0}
+.stage-art{position:relative;width:100%;max-width:480px;margin-inline:auto;aspect-ratio:10/9}
+.stage-art svg{width:100%;height:100%;animation:float 5s ease-in-out infinite}
+.stage-art.swap svg{animation:pop .45s ease-out,float 5s ease-in-out .45s infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+@keyframes pop{from{opacity:0;transform:scale(.88) rotate(-4deg)}to{opacity:1;transform:none}}
+.stage-caption{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 14px;margin-top:6px}
+.stage-name{font-family:var(--font-display);font-size:24px}
+.btn-sm{min-height:40px;padding:0 16px;font-size:14px;border-radius:12px}
+
+/* carrossel */
+.carousel{position:relative;z-index:2;display:flex;align-items:center;gap:10px;margin-top:20px}
+.arrow{flex:none;width:44px;height:44px;border-radius:50%;border:2px solid rgba(255,255,255,.7);background:transparent;color:var(--white);display:grid;place-items:center;cursor:pointer}
+.arrow:hover{background:rgba(255,255,255,.18)}
+.arrow svg{width:20px;height:20px}
+.thumbs{flex:1;min-width:0;display:flex;gap:12px;overflow-x:auto;padding:16px 6px 10px;scrollbar-width:none;justify-content:center}
+.thumbs::-webkit-scrollbar{display:none}
+.thumb{position:relative;flex:none;width:104px;padding:8px 8px 6px;border:0;border-radius:16px;background:rgba(0,0,0,.2);color:var(--white);text-align:center;cursor:pointer;transition:transform .2s,background .2s}
+.thumb svg{height:58px;width:100%}
+.thumb span{display:block;margin-top:2px;font-size:11px;font-weight:700;line-height:1.2}
+.thumb:hover{background:rgba(0,0,0,.32)}
+.thumb[aria-current="true"]{background:var(--white);color:var(--red);transform:translateY(-6px) scale(1.06)}
+.thumb[aria-current="true"]::before{content:"";position:absolute;top:-9px;left:50%;margin-left:-7px;border:7px solid transparent;border-bottom-color:var(--white);border-top:0}
+.dots{position:relative;z-index:2;display:flex;justify-content:center;gap:8px;padding-top:2px}
+.dot{width:10px;height:10px;border-radius:5px;border:0;background:rgba(255,255,255,.4);padding:0;cursor:pointer;transition:width .2s,background .2s}
+.dot[aria-current="true"]{width:28px;background:var(--white)}
+
+/* seções */
+section{margin-top:clamp(56px,8vw,96px)}
+.section-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:12px 24px;margin-bottom:28px}
+.section-head h2{font-size:clamp(34px,5vw,56px);line-height:1.05;color:var(--red)}
+.section-head p{max-width:42ch;color:var(--muted)}
+.menu-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));gap:20px}
+.card{display:flex;flex-direction:column;background:var(--white);border:1px solid var(--line);border-radius:22px;overflow:hidden}
+.card-art{background:var(--blush);padding:14px 18px 6px;aspect-ratio:4/3;display:grid;place-items:center}
+.card-art svg{width:100%;height:100%}
+.card-art svg circle:first-child{fill:var(--red);opacity:.10}
+.card-body{display:flex;flex-direction:column;gap:6px;padding:18px 20px 20px;flex:1}
+.card-body h3{font-size:19px;font-weight:700;font-family:var(--font-body)}
+.card-body p{color:var(--muted);font-size:14.5px;flex:1}
+.card-foot{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px}
+.in-cart{font-size:13px;font-weight:700;color:var(--red)}
+
+.story{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:28px;align-items:center;background:var(--blush);border-radius:28px;padding:clamp(24px,4vw,48px)}
+.story h2{font-size:clamp(34px,5vw,54px);line-height:1.05;color:var(--red);margin-bottom:12px}
+.story p{color:var(--muted);max-width:48ch;margin-bottom:22px}
+.facts{display:grid;gap:12px}
+.fact{background:var(--white);border:1px solid var(--line);border-radius:18px;padding:16px 20px}
+.fact small{display:block;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
+.fact strong{font-family:var(--font-display);font-weight:400;font-size:24px}
+
+.contact{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px;background:var(--red);color:var(--white);border-radius:28px;padding:clamp(24px,4vw,48px)}
+.contact h2{font-size:clamp(32px,5vw,52px);line-height:1.05;margin-bottom:8px}
+.contact p{opacity:.95}
+.phone{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-top:14px}
+.phone b{font-size:20px;letter-spacing:.02em;user-select:all}
+.copy{background:rgba(255,255,255,.18);color:var(--white);border:0;border-radius:10px;min-height:38px;padding:0 14px;font-weight:700;font-size:13px;cursor:pointer}
+.copy:hover{background:rgba(255,255,255,.3)}
+.foot{margin-top:28px;text-align:center;color:var(--muted);font-size:14px}
+
+/* carrinho */
+.fab{position:fixed;z-index:30;right:calc(16px + env(safe-area-inset-right,0px));bottom:calc(16px + env(safe-area-inset-bottom,0px));width:60px;height:60px;border-radius:50%;border:0;background:var(--red);color:var(--white);display:grid;place-items:center;cursor:pointer;box-shadow:0 8px 24px rgba(158,11,34,.45)}
+.fab svg{width:26px;height:26px}
+.fab .badge{background:var(--white);color:var(--red);box-shadow:0 0 0 2px var(--red)}
+.overlay{position:fixed;inset:0;z-index:40;background:rgba(43,11,16,.55);opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
+.overlay.open{opacity:1;visibility:visible}
+.drawer{position:fixed;z-index:50;top:0;bottom:0;right:0;width:min(430px,100%);background:var(--white);color:var(--ink);display:flex;flex-direction:column;gap:14px;transform:translateX(105%);visibility:hidden;transition:transform .3s,visibility .3s;padding:calc(18px + env(safe-area-inset-top,0px)) calc(18px + env(safe-area-inset-right,0px)) calc(18px + env(safe-area-inset-bottom,0px)) 18px;box-shadow:-12px 0 40px rgba(0,0,0,.2)}
+.drawer.open{transform:none;visibility:visible}
+.drawer-head{display:flex;align-items:center;justify-content:space-between}
+.drawer-head h2{font-size:30px;color:var(--red)}
+.x{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--white);color:var(--ink);font-size:22px;line-height:1;cursor:pointer}
+.x:hover{background:var(--blush)}
+.cart-list{flex:1;min-height:0;overflow-y:auto;display:flex;flex-direction:column;gap:10px;margin:0;padding:0;list-style:none}
+.cart-empty{color:var(--muted);text-align:center;padding:36px 12px;background:var(--blush);border-radius:16px}
+.cart-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid var(--line);border-radius:16px}
+.cart-item svg{width:56px;height:50px;flex:none;background:var(--blush);border-radius:10px;padding:3px}
+.cart-item svg circle:first-child{display:none}
+.cart-item b{flex:1;min-width:0;font-size:15px;line-height:1.3}
+.step{display:flex;align-items:center;gap:6px}
+.step button{width:34px;height:34px;border-radius:50%;border:1px solid var(--red);background:var(--white);color:var(--red);font-size:18px;font-weight:700;line-height:1;cursor:pointer}
+.step button:hover{background:var(--red);color:var(--white)}
+.step span{min-width:20px;text-align:center;font-weight:700}
+.drawer label{font-size:13px;font-weight:700;color:var(--muted)}
+.drawer textarea{width:100%;min-height:72px;margin-top:6px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;font:inherit;resize:vertical;background:var(--white);color:var(--ink)}
+.drawer-actions{display:grid;gap:10px}
+.link-btn{background:none;border:0;color:var(--muted);text-decoration:underline;font-size:14px;cursor:pointer;min-height:36px}
+
+/* história */
+.modal{position:fixed;z-index:60;inset:0;display:grid;place-items:center;padding:16px;background:rgba(43,11,16,.62);opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
+.modal.open{opacity:1;visibility:visible}
+.modal-box{position:relative;width:min(540px,100%);max-height:calc(100% - 8px);overflow-y:auto;background:var(--white);border-radius:28px;padding:clamp(24px,5vw,40px);transform:translateY(16px);transition:transform .25s}
+.modal.open .modal-box{transform:none}
+.modal-box .x{position:absolute;top:14px;right:14px}
+.modal-box h2{font-size:clamp(32px,6vw,44px);line-height:1.05;color:var(--red);margin-bottom:14px;padding-right:44px}
+.modal-box p{color:var(--muted);margin-bottom:12px}
+.modal-box .facts{grid-template-columns:repeat(auto-fit,minmax(130px,1fr));margin:20px 0 22px}
+.modal-box .fact{background:var(--blush);border-color:transparent}
+.modal-box .fact strong{font-size:20px}
+
+.toast{position:fixed;z-index:70;left:50%;bottom:calc(92px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--ink);color:var(--white);padding:12px 18px;border-radius:12px;font-size:14px;font-weight:500;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;max-width:calc(100% - 32px);text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* responsivo */
+@media (max-width:860px){
+  .nav-links{position:absolute;top:calc(100% + 10px);left:0;right:0;flex-direction:column;align-items:stretch;background:var(--red-deep);border-radius:18px;padding:8px;display:none}
+  .nav-links.open{display:flex}
+  .nav-links a,.nav-links button{text-align:left}
+  .burger-btn{display:grid}
+  .hero-grid{grid-template-columns:minmax(0,1fr)}
+  .stage-art{max-width:400px}
+  .story{grid-template-columns:minmax(0,1fr)}
+  .nav-order{display:none}
+}
+@media (max-width:480px){
+  .hero{border-radius:24px}
+  .thumb{width:92px}
+  .arrow{width:38px;height:38px}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+
+<div class="wrap">
+  <header class="hero" id="inicio">
+    <nav class="nav" aria-label="Principal">
+      <a class="logo" href="#inicio"><span class="logo-mark">P</span>Poly Lanches</a>
+      <div class="nav-links" id="navLinks">
+        <a href="#inicio">Início</a>
+        <a href="#cardapio">Cardápio</a>
+        <button type="button" data-open-story>Nossa história</button>
+        <a href="#contato">Contato</a>
+      </div>
+      <div class="nav-actions">
+        <a class="btn btn-white btn-sm nav-order" data-wa href="#" target="_blank" rel="noopener">Fazer pedido</a>
+        <button class="icon-btn" type="button" id="navCart" aria-label="Abrir meu pedido">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2.2l2.1 10.2a1.5 1.5 0 0 0 1.5 1.2h8.1a1.5 1.5 0 0 0 1.5-1.1L20 8H6.2"/><circle cx="9.5" cy="19.5" r="1.4"/><circle cx="17" cy="19.5" r="1.4"/></svg>
+          <span class="badge" data-count hidden>0</span>
+        </button>
+        <button class="icon-btn burger-btn" type="button" id="burgerBtn" aria-label="Abrir menu" aria-expanded="false" aria-controls="navLinks">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </nav>
+
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow">Lanchonete desde 2024</p>
+        <h1>O lanche que faz você feliz</h1>
+        <p>Bem-vindo à Poly Lanches. Hambúrguer, cachorro-quente, salgados e baurus feitos para matar a fome com sabor de casa.</p>
+        <div class="cta-row">
+          <a class="btn btn-white" data-wa href="#" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a8.5 8.5 0 0 1-12.6 7.4L3 21l1.6-5.2A8.5 8.5 0 1 1 21 12Z"/><path d="M8.5 9.5c.3 2.6 2.4 4.700 5 5l1.300-1.300-2-1-.8.800c-.9-.4-1.700-1.200-2.100-2.100l.8-.8-1-2Z"/></svg>
+            Fazer pedido
+          </a>
+          <a class="btn btn-ghost" href="#cardapio">Ver cardápio</a>
+          <button class="btn btn-ghost" type="button" data-open-story>Nossa história</button>
+        </div>
+      </div>
+      <div class="stage">
+        <div class="stage-art" id="stageArt" aria-live="polite"></div>
+        <div class="stage-caption">
+          <span class="stage-name" id="stageName"></span>
+          <button class="btn btn-white btn-sm" type="button" id="stageAdd">+ Adicionar ao pedido</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="carousel">
+      <button class="arrow" type="button" id="prev" aria-label="Lanche anterior">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>
+      </button>
+      <div class="thumbs" id="thumbs" role="group" aria-label="Escolha um lanche"></div>
+      <button class="arrow" type="button" id="next" aria-label="Próximo lanche">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+    <div class="dots" id="dots"></div>
+  </header>
+
+  <section id="cardapio" aria-labelledby="menuTitle">
+    <div class="section-head">
+      <h2 id="menuTitle">Nosso cardápio</h2>
+      <p>Escolha o que você quer, monte seu pedido e envie direto para o nosso WhatsApp.</p>
+    </div>
+    <div class="menu-grid" id="menuGrid"></div>
+  </section>
+
+  <section class="story" aria-labelledby="storyTitle">
+    <div>
+      <h2 id="storyTitle">Uma lanchonete feita para te fazer feliz</h2>
+      <p>Conheça quem está por trás da Poly Lanches e por que cada lanche sai da nossa cozinha com tanto capricho.</p>
+      <button class="btn btn-red" type="button" data-open-story>Conheça nossa história</button>
+    </div>
+    <div class="facts">
+      <div class="fact"><small>Desde</small><strong>2024</strong></div>
+      <div class="fact"><small>Dona</small><strong>Poliana</strong></div>
+      <div class="fact"><small>Nossa função</small><strong>Te fazer feliz</strong></div>
+    </div>
+  </section>
+
+  <section class="contact" id="contato" aria-labelledby="contactTitle">
+    <div>
+      <h2 id="contactTitle">Bateu a fome?</h2>
+      <p>Chame a gente no WhatsApp e faça seu pedido agora.</p>
+      <div class="phone">
+        <b id="phoneText">(81) 99363-5998</b>
+        <button class="copy" type="button" id="copyPhone">Copiar número</button>
+      </div>
+    </div>
+    <a class="btn btn-white" data-wa href="#" target="_blank" rel="noopener">Quero fazer um pedido</a>
+  </section>
+
+  <p class="foot">Poly Lanches · Lanchonete da Poliana · Desde 2024</p>
+</div>
+
+<button class="fab" type="button" id="fab" aria-label="Abrir meu pedido">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 4h2.2l2.1 10.2a1.5 1.5 0 0 0 1.5 1.2h8.1a1.5 1.5 0 0 0 1.5-1.1L20 8H6.2"/><circle cx="9.5" cy="19.5" r="1.4"/><circle cx="17" cy="19.5" r="1.4"/></svg>
+  <span class="badge" data-count hidden>0</span>
+</button>
+
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" role="dialog" aria-modal="true" aria-labelledby="drawerTitle" aria-hidden="true">
+  <div class="drawer-head">
+    <h2 id="drawerTitle">Meu pedido</h2>
+    <button class="x" type="button" id="closeCart" aria-label="Fechar pedido">×</button>
+  </div>
+  <ul class="cart-list" id="cartList"></ul>
+  <div>
+    <label for="obs">Observações (opcional)</label>
+    <textarea id="obs" placeholder="Ex.: sem tomate, ponto da carne, endereço para entrega"></textarea>
+  </div>
+  <div class="drawer-actions">
+    <a class="btn btn-red" id="sendWa" href="#" target="_blank" rel="noopener">Enviar pedido pelo WhatsApp</a>
+    <button class="link-btn" type="button" id="clearCart">Limpar pedido</button>
+  </div>
+</aside>
+
+<div class="modal" id="storyModal" role="dialog" aria-modal="true" aria-labelledby="storyModalTitle" aria-hidden="true">
+  <div class="modal-box">
+    <button class="x" type="button" id="closeStory" aria-label="Fechar">×</button>
+    <h2 id="storyModalTitle">Nossa história</h2>
+    <p>A Poly Lanches existe desde 2024. Quem cuida da lanchonete é a Poliana, a dona, que abriu as portas com uma ideia simples.</p>
+    <p>Nossa função é te fazer feliz. Cada lanche que sai da nossa cozinha é feito para isso.</p>
+    <div class="facts">
+      <div class="fact"><small>Desde</small><strong>2024</strong></div>
+      <div class="fact"><small>Dona</small><strong>Poliana</strong></div>
+      <div class="fact"><small>Missão</small><strong>Te fazer feliz</strong></div>
+    </div>
+    <a class="btn btn-red" data-wa href="#" target="_blank" rel="noopener">Quero fazer um pedido</a>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  var WA = '5581993635998';
+  function waLink(text){ return 'https://wa.me/' + WA + '?text=' + encodeURIComponent(text); }
+  function $(s){ return document.querySelector(s); }
+  function $$(s){ return Array.prototype.slice.call(document.querySelectorAll(s)); }
+
+  /* ilustrações originais dos lanches */
+  var SUN = '<circle cx="200" cy="190" r="165" fill="#fff" opacity=".10"/>';
+  function wrap(label, inner){ return '<svg viewBox="0 0 400 360" role="img" aria-label="' + label + '">' + SUN + inner + '</svg>'; }
+
+  var SVG_BURGER = wrap('Hambúrguer tradicional',
+    '<path d="M62 126C62 44 338 44 338 126Z" fill="#E39B34"/>' +
+    '<path d="M92 104C108 76 150 64 188 64" fill="none" stroke="#F7C977" stroke-width="9" stroke-linecap="round" opacity=".75"/>' +
+    '<g fill="#FFF3D6"><ellipse cx="130" cy="92" rx="10" ry="5.5" transform="rotate(-25 130 92)"/><ellipse cx="180" cy="72" rx="10" ry="5.5" transform="rotate(10 180 72)"/><ellipse cx="232" cy="82" rx="10" ry="5.5" transform="rotate(-15 232 82)"/><ellipse cx="278" cy="100" rx="10" ry="5.5" transform="rotate(30 278 100)"/><ellipse cx="205" cy="108" rx="10" ry="5.5" transform="rotate(5 205 108)"/><ellipse cx="150" cy="114" rx="9" ry="5" transform="rotate(-8 150 114)"/></g>' +
+    '<rect x="74" y="138" width="252" height="22" rx="11" fill="#E8364B" stroke="#8F0E22" stroke-width="2"/>' +
+    '<path d="M52 176q12.5-24 25 0t25 0 25 0 25 0 25 0 25 0 25 0 25 0 25 0 25 0 25 0 25 0v18H52Z" fill="#7DB840"/>' +
+    '<path d="M70 198H330L316 218L298 202L280 232L260 204H140L120 232L102 202L84 218Z" fill="#F6C945"/>' +
+    '<rect x="62" y="214" width="276" height="42" rx="21" fill="#5B3020"/>' +
+    '<path d="M92 228h56M200 240h84" stroke="#7B4630" stroke-width="5" stroke-linecap="round"/>' +
+    '<path d="M66 270H334C334 308 308 330 268 330H132C92 330 66 308 66 270Z" fill="#E39B34"/>');
+
+  var SVG_HOTDOG = wrap('Cachorro-quente',
+    '<g transform="rotate(-8 200 190)">' +
+    '<rect x="44" y="176" width="312" height="96" rx="48" fill="#D98A2B"/>' +
+    '<rect x="30" y="150" width="340" height="58" rx="29" fill="#B5361F"/>' +
+    '<path d="M60 162H340" stroke="#D45A3F" stroke-width="8" stroke-linecap="round" opacity=".7"/>' +
+    '<path d="M64 182l20-16 20 16 20-16 20 16 20-16 20 16 20-16 20 16 20-16 20 16 20-16 20 16 20-16 20 16" fill="none" stroke="#F6C945" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>' +
+    '<path d="M48 198H352C352 252 318 278 276 278H124C82 278 48 252 48 198Z" fill="#EDAB4C"/>' +
+    '<path d="M84 222C120 240 160 244 190 244" fill="none" stroke="#F7C977" stroke-width="7" stroke-linecap="round" opacity=".7"/>' +
+    '</g>');
+
+  var SVG_COXINHA = wrap('Coxinha',
+    '<path d="M200 54C292 130 336 214 296 284C268 334 132 334 104 284C64 214 108 130 200 54Z" fill="#E0962E"/>' +
+    '<path d="M148 168C164 134 184 110 198 96" fill="none" stroke="#F4C46E" stroke-width="12" stroke-linecap="round" opacity=".8"/>' +
+    '<circle cx="200" cy="52" r="14" fill="#D58625"/>' +
+    '<g fill="#B8691A" opacity=".75"><circle cx="170" cy="210" r="4"/><circle cx="226" cy="190" r="4"/><circle cx="250" cy="240" r="4"/><circle cx="196" cy="262" r="4"/><circle cx="144" cy="256" r="4"/><circle cx="212" cy="140" r="3.5"/><circle cx="262" cy="200" r="3.5"/><circle cx="238" cy="282" r="3.5"/><circle cx="166" cy="170" r="3.5"/></g>' +
+    '<g fill="#F4C46E" opacity=".8"><circle cx="190" cy="232" r="3.5"/><circle cx="242" cy="214" r="3.5"/><circle cx="154" cy="228" r="3.5"/><circle cx="214" cy="170" r="3.5"/><circle cx="270" cy="256" r="3.5"/></g>');
+
+  var SVG_PASTEL = wrap('Pastel',
+    '<g transform="rotate(-10 200 190)">' +
+    '<rect x="46" y="112" width="308" height="168" rx="26" fill="#E8A83F"/>' +
+    '<rect x="62" y="128" width="276" height="136" rx="16" fill="none" stroke="#B8721C" stroke-width="5" stroke-dasharray="2 9" stroke-linecap="round"/>' +
+    '<g fill="#F7CD7A" opacity=".85"><ellipse cx="120" cy="170" rx="24" ry="13"/><ellipse cx="236" cy="152" rx="30" ry="12"/><ellipse cx="290" cy="214" rx="22" ry="12"/><ellipse cx="160" cy="226" rx="26" ry="11"/></g>' +
+    '<g fill="#C98622" opacity=".6"><ellipse cx="200" cy="196" rx="20" ry="9"/><ellipse cx="96" cy="222" rx="14" ry="8"/><ellipse cx="312" cy="160" rx="12" ry="7"/></g>' +
+    '</g>');
+
+  function bauru(label, filling){
+    return wrap(label,
+      '<path d="M54 252C54 228 346 228 346 252C346 294 318 310 278 310H122C82 310 54 294 54 252Z" fill="#E39B34"/>' +
+      filling +
+      '<path d="M64 232H336C336 248 324 256 314 248C308 270 290 270 286 250C278 266 260 266 256 248H132C126 268 110 268 104 250C94 262 78 258 74 246Z" fill="#F6C945"/>' +
+      '<g stroke="#4F8F2A" stroke-width="3" stroke-linecap="round"><path d="M110 238l6-3M170 242l6-3M230 240l6-3M290 238l6-3M140 226l6 3M260 228l6 3"/></g>' +
+      '<g transform="rotate(-7 200 160)"><path d="M62 200C66 120 336 104 346 166C350 196 332 206 302 206H92C76 206 62 204 62 200Z" fill="#EAA747"/>' +
+      '<path d="M120 150l26 22M190 140l26 24M262 144l24 20" stroke="#C57A1C" stroke-width="6" stroke-linecap="round" opacity=".7"/></g>');
+  }
+  var SVG_BAURU_PIZZA = bauru('Bauru de pizza',
+    '<rect x="70" y="214" width="260" height="22" rx="11" fill="#F2A0A8"/>' +
+    '<g fill="#E8364B" stroke="#8F0E22" stroke-width="2"><circle cx="112" cy="224" r="17"/><circle cx="172" cy="224" r="17"/><circle cx="232" cy="224" r="17"/><circle cx="292" cy="224" r="17"/></g>');
+  var SVG_BAURU_FRANGO = bauru('Bauru de frango',
+    '<g fill="#F3D9B1" stroke="#D9B27A" stroke-width="2"><ellipse cx="100" cy="222" rx="30" ry="12" transform="rotate(-8 100 222)"/><ellipse cx="160" cy="218" rx="28" ry="12" transform="rotate(6 160 218)"/><ellipse cx="220" cy="222" rx="30" ry="12" transform="rotate(-5 220 222)"/><ellipse cx="280" cy="218" rx="28" ry="12" transform="rotate(8 280 218)"/></g>' +
+    '<g fill="#E8364B" stroke="#8F0E22" stroke-width="2"><circle cx="136" cy="226" r="13"/><circle cx="250" cy="226" r="13"/></g>');
+
+  var ITEMS = [
+    {id:'hamburguer', name:'Hambúrguer tradicional', short:'Hambúrguer', desc:'Pão macio, hambúrguer, queijo, alface e tomate.', svg:SVG_BURGER},
+    {id:'cachorro', name:'Cachorro-quente', short:'Cachorro-quente', desc:'Pão macio com salsicha e molhos, do jeito clássico.', svg:SVG_HOTDOG},
+    {id:'coxinha', name:'Coxinha', short:'Coxinha', desc:'Salgado dourado e crocante por fora, recheado por dentro.', svg:SVG_COXINHA},
+    {id:'pastel', name:'Pastel', short:'Pastel', desc:'Massa fininha e crocante, frito na hora.', svg:SVG_PASTEL},
+    {id:'bauru-pizza', name:'Bauru de pizza', short:'Bauru de pizza', desc:'Pão com presunto, tomate e queijo derretido, com sabor de pizza.', svg:SVG_BAURU_PIZZA},
+    {id:'bauru-frango', name:'Bauru de frango', short:'Bauru de frango', desc:'Pão com frango desfiado, tomate e queijo derretido.', svg:SVG_BAURU_FRANGO}
+  ];
+  function byId(id){ for (var i=0;i<ITEMS.length;i++) if (ITEMS[i].id===id) return ITEMS[i]; }
+
+  /* ---------- carrinho ---------- */
+  var cart = {}; // id -> quantidade
+  function total(){ var n=0; for (var k in cart) n += cart[k]; return n; }
+  function buildMessage(){
+    var ids = Object.keys(cart);
+    if (!ids.length) return 'Quero fazer um pedido';
+    var msg = 'Quero fazer um pedido:\n';
+    ids.forEach(function(id){ msg += '- ' + cart[id] + 'x ' + byId(id).name + '\n'; });
+    var obs = ($('#obs').value || '').trim();
+    if (obs) msg += 'Observações: ' + obs;
+    return msg.replace(/\s+$/,'');
+  }
+  function renderCart(){
+    var list = $('#cartList');
+    var ids = Object.keys(cart);
+    var n = total();
+    $$('[data-count]').forEach(function(b){ b.textContent = n; b.hidden = n === 0; });
+    if (!ids.length){
+      list.innerHTML = '<li class="cart-empty">Seu pedido está vazio. Escolha um lanche no cardápio para começar.</li>';
+    } else {
+      list.innerHTML = ids.map(function(id){
+        var it = byId(id);
+        return '<li class="cart-item">' + it.svg + '<b>' + it.name + '</b>' +
+          '<div class="step"><button type="button" data-dec="' + id + '" aria-label="Diminuir ' + it.name + '">−</button>' +
+          '<span>' + cart[id] + '</span>' +
+          '<button type="button" data-inc="' + id + '" aria-label="Aumentar ' + it.name + '">+</button></div></li>';
+      }).join('');
+    }
+    ITEMS.forEach(function(it){
+      var el = document.getElementById('in-' + it.id);
+      if (el) el.textContent = cart[it.id] ? (cart[it.id] + (cart[it.id] === 1 ? ' no pedido' : ' no pedido')) : '';
+    });
+    $('#sendWa').href = waLink(buildMessage());
+  }
+  var toastTimer;
+  function toast(text){
+    var t = $('#toast'); t.textContent = text; t.classList.add('show');
+    clearTimeout(toastTimer); toastTimer = setTimeout(function(){ t.classList.remove('show'); }, 1800);
+  }
+  function add(id){ cart[id] = (cart[id] || 0) + 1; renderCart(); toast(byId(id).name + ' adicionado ao pedido'); }
+  $('#cartList').addEventListener('click', function(e){
+    var b = e.target.closest('button'); if (!b) return;
+    var inc = b.getAttribute('data-inc'), dec = b.getAttribute('data-dec');
+    if (inc) cart[inc]++;
+    if (dec){ cart[dec]--; if (cart[dec] <= 0) delete cart[dec]; }
+    renderCart();
+  });
+  $('#obs').addEventListener('input', renderCart);
+  $('#clearCart').addEventListener('click', function(){ cart = {}; renderCart(); });
+
+  /* ---------- painéis (carrinho e história) ---------- */
+  var lastFocus = null;
+  function openCart(){
+    lastFocus = document.activeElement;
+    $('#overlay').classList.add('open'); $('#drawer').classList.add('open'); $('#drawer').setAttribute('aria-hidden','false');
+    $('#closeCart').focus();
+  }
+  function closeCart(){
+    $('#overlay').classList.remove('open'); $('#drawer').classList.remove('open'); $('#drawer').setAttribute('aria-hidden','true');
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  function openStory(){
+    lastFocus = document.activeElement;
+    $('#storyModal').classList.add('open'); $('#storyModal').setAttribute('aria-hidden','false');
+    $('#closeStory').focus();
+  }
+  function closeStory(){
+    $('#storyModal').classList.remove('open'); $('#storyModal').setAttribute('aria-hidden','true');
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+  $('#fab').addEventListener('click', openCart);
+  $('#navCart').addEventListener('click', openCart);
+  $('#closeCart').addEventListener('click', closeCart);
+  $('#overlay').addEventListener('click', closeCart);
+  $$('[data-open-story]').forEach(function(b){ b.addEventListener('click', function(){ $('#navLinks').classList.remove('open'); openStory(); }); });
+  $('#closeStory').addEventListener('click', closeStory);
+  $('#storyModal').addEventListener('click', function(e){ if (e.target === this) closeStory(); });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape'){
+      if ($('#storyModal').classList.contains('open')) closeStory();
+      else if ($('#drawer').classList.contains('open')) closeCart();
+    }
+  });
+
+  /* menu móvel */
+  $('#burgerBtn').addEventListener('click', function(){
+    var open = $('#navLinks').classList.toggle('open');
+    this.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+  $$('#navLinks a').forEach(function(a){ a.addEventListener('click', function(){ $('#navLinks').classList.remove('open'); }); });
+
+  /* ---------- WhatsApp ---------- */
+  $$('[data-wa]').forEach(function(a){ a.href = waLink('Quero fazer um pedido'); });
+
+  /* ---------- hero interativo ---------- */
+  var current = 0;
+  function renderHero(i, animate){
+    current = (i + ITEMS.length) % ITEMS.length;
+    var it = ITEMS[current];
+    var art = $('#stageArt');
+    art.innerHTML = it.svg;
+    if (animate){ art.classList.remove('swap'); void art.offsetWidth; art.classList.add('swap'); }
+    $('#stageName').textContent = it.name;
+    $$('.thumb').forEach(function(t, k){ t.setAttribute('aria-current', k === current ? 'true' : 'false'); });
+    $$('.dot').forEach(function(d, k){ d.setAttribute('aria-current', k === current ? 'true' : 'false'); });
+    var sel = $$('.thumb')[current];
+    var box = $('#thumbs');
+    if (sel && box){ box.scrollTo({left: sel.offsetLeft - (box.clientWidth - sel.offsetWidth) / 2, behavior:'smooth'}); }
+  }
+  $('#thumbs').innerHTML = ITEMS.map(function(it, k){
+    return '<button class="thumb" type="button" data-i="' + k + '" aria-label="' + it.name + '">' + it.svg + '<span>' + it.short + '</span></button>';
+  }).join('');
+  $('#dots').innerHTML = ITEMS.map(function(it, k){
+    return '<button class="dot" type="button" data-i="' + k + '" aria-label="Ver ' + it.name + '"></button>';
+  }).join('');
+  $('#thumbs').addEventListener('click', function(e){ var b = e.target.closest('.thumb'); if (b) renderHero(+b.getAttribute('data-i'), true); });
+  $('#dots').addEventListener('click', function(e){ var b = e.target.closest('.dot'); if (b) renderHero(+b.getAttribute('data-i'), true); });
+  $('#prev').addEventListener('click', function(){ renderHero(current - 1, true); });
+  $('#next').addEventListener('click', function(){ renderHero(current + 1, true); });
+  $('#stageAdd').addEventListener('click', function(){ add(ITEMS[current].id); });
+
+  /* ---------- cardápio ---------- */
+  $('#menuGrid').innerHTML = ITEMS.map(function(it){
+    return '<article class="card"><div class="card-art">' + it.svg + '</div>' +
+      '<div class="card-body"><h3>' + it.name + '</h3><p>' + it.desc + '</p>' +
+      '<div class="card-foot"><button class="btn btn-outline btn-sm" type="button" data-add="' + it.id + '">+ Adicionar</button>' +
+      '<span class="in-cart" id="in-' + it.id + '"></span></div></div></article>';
+  }).join('');
+  $('#menuGrid').addEventListener('click', function(e){
+    var b = e.target.closest('[data-add]'); if (b) add(b.getAttribute('data-add'));
+  });
+
+  /* ---------- copiar número ---------- */
+  $('#copyPhone').addEventListener('click', function(){
+    var btn = this, txt = $('#phoneText').textContent;
+    function done(){ btn.textContent = 'Número copiado'; setTimeout(function(){ btn.textContent = 'Copiar número'; }, 1800); }
+    function fallback(){
+      var r = document.createRange(); r.selectNodeContents($('#phoneText'));
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      btn.textContent = 'Selecionado, copie o número'; setTimeout(function(){ btn.textContent = 'Copiar número'; }, 2200);
+    }
+    try {
+      navigator.clipboard.writeText(txt).then(done, fallback);
+    } catch (err) { fallback(); }
+  });
+
+  renderHero(0, false);
+  renderCart();
+})();
+</script>
+
+</body></html>
